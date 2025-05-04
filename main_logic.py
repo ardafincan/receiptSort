@@ -1,4 +1,4 @@
-import fitz  
+import pymupdf
 import re
 import os
 import locale
@@ -41,7 +41,7 @@ def find_name(text):
 def page_traverse(pdf_path):
     global pages
     global_page_number = 0
-    doc = fitz.open(pdf_path)
+    doc = pymupdf.open(pdf_path)
     pages = []
     for page in doc:
         
