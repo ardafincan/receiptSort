@@ -3,28 +3,21 @@ import re
 import os
 import locale
 import tempfile
-from pypdf import PdfMerger, PdfReader, PdfWriter
+from pypdf import PdfReader, PdfWriter
 
 def merge_pdfs(pdf_files):
-    """
-    Merges PDF files from a list of file paths and creates a temporary merged file
-    
-    Args:
-        pdf_files: A list of paths to PDF files
-        
-    Returns:
-        str: Path to the temporary merged PDF file
-    """
-    merger = PdfMerger()
+    merge_writer = PdfWriter()
 
     # Use the provided list of file paths directly instead of scanning a folder
     for filepath in pdf_files:
-        merger.append(filepath)
+        reader = PdfReader(filepath)
+        for page in reader.pages:
+            merge_writer.add_page(page)
 
     # Create a temporary file for the merged PDF
     with tempfile.NamedTemporaryFile(delete=False, suffix="_merged.pdf") as temp_file:
         temp_path = temp_file.name
-        merger.write(temp_file)
+        merge_writer.write(temp_file)
     
     # Return the path to the temporary merged file
     return temp_path
